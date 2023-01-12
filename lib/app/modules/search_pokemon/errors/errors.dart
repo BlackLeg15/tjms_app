@@ -1,0 +1,3 @@
+class ErroNameVazio {
+  const ErroNameVazio();
+}

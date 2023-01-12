@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tjms_app/app/modules/search_pokemon/models/pokemon_model.dart';
-import 'package:tjms_app/app/modules/search_pokemon/repositories/search_pokemon_repository.dart';
+
+import '../interfaces/repositories/search_pokemon_repository.dart';
+import '../models/pokemon_model.dart';
 
 class SearchPokemonPage extends StatefulWidget {
   const SearchPokemonPage({super.key});
