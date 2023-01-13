@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tjms_app/app/modules/search_pokemon/pages/widgets/list_tile_personalizado.dart';
 
 import '../interfaces/repositories/search_pokemon_repository.dart';
 import '../models/pokemon_model.dart';
@@ -12,7 +13,7 @@ class SearchPokemonPage extends StatefulWidget {
 }
 
 class _SearchPokemonPageState extends State<SearchPokemonPage> {
-  final pokemonName = 'ditto';
+  final pokemonName = 'pikachu';
   final repository = Modular.get<SearchPokemonRepository>();
 
   @override
@@ -32,9 +33,9 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
               final pokemon = snapshot.data!;
               return Column(
                 children: [
-                  ListTile(
-                    title: Text(pokemon.name),
-                    subtitle: Text('ID: ${pokemon.id}'),
+                  ListTilePersonalizado(
+                    name: pokemon.name,
+                    id: pokemon.id,
                   ),
                   ListView.builder(
                     shrinkWrap: true,
