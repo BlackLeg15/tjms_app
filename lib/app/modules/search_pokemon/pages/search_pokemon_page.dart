@@ -16,6 +16,9 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
   final pokemonName = 'pikachu';
   final repository = Modular.get<SearchPokemonRepository>();
 
+  var campoDeTexto = '';
+  Future<PokemonModel>? futureGetPokemonByName;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +27,7 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
       ),
       body: Center(
         child: FutureBuilder<PokemonModel>(
-          future: repository.getPokemonByName(name: pokemonName),
+          future: futureGetPokemonByName,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -47,7 +50,25 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
                 ],
               );
             }
-            return const SizedBox();
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  key: const Key('Search Text'),
+                  onChanged: (value) {
+                    campoDeTexto = value;
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      futureGetPokemonByName = repository.getPokemonByName(name: campoDeTexto);
+                    });
+                  },
+                  child: const Text('Buscar'),
+                ),
+              ],
+            );
           },
         ),
       ),
