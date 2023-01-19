@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:modular_test/modular_test.dart';
 import 'package:tjms_app/app/app_module.dart';
+import 'package:tjms_app/app/modules/search_pokemon/errors/errors.dart';
 import 'package:tjms_app/app/modules/search_pokemon/interfaces/http_client/http_client.dart';
 import 'package:tjms_app/app/modules/search_pokemon/interfaces/http_client/http_response.dart';
 import 'package:tjms_app/app/modules/search_pokemon/pages/search_pokemon_page.dart';
@@ -23,6 +24,26 @@ void main() {
     ], replaceBinds: [
       Bind.lazySingleton<HttpClient>((i) => httpClient),
     ]);
+  });
+
+  testWidgets('Se ErroNameVazio, apresente a mensagem adequada', (tester) async {
+    //Configuração
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SearchPokemonPage(),
+      ),
+    );
+
+    final foundSearchButton = find.byType(ElevatedButton);
+    expect(foundSearchButton, findsOneWidget);
+
+    //Ação
+    await tester.tap(foundSearchButton);
+    await tester.pumpAndSettle();
+
+    //Expectativa
+    final foundErrorMessage = find.text(const ErroNameVazio().message);
+    expect(foundErrorMessage, findsOneWidget);
   });
 
   testWidgets('Se dados são corretos, a página deve apresentá-los corretamente', (tester) async {

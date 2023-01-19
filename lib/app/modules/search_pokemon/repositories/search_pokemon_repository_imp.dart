@@ -1,3 +1,4 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tjms_app/app/modules/search_pokemon/interfaces/http_client/http_exception.dart';
 
@@ -12,23 +13,23 @@ class SearchPokemonRepositoryImp implements SearchPokemonRepository {
   SearchPokemonRepositoryImp(this.httpClient);
 
   @override
-  Future<PokemonModel> getPokemonByName({required String name}) async {
+  Future<Either<ErroPersonalizado, PokemonModel>> getPokemonByName({required String name}) async {
     if (name.isEmpty) {
-      throw const ErroNameVazio();
+      return const Left(ErroNameVazio());
     }
     try {
       final result = await httpClient.get('pokemon/$name');
       final model = PokemonModel.fromMap(result.data);
-      return model;
+      return Right(model);
     } on HttpException catch (error, stacktrace) {
       debugPrint(stacktrace.toString());
       final statusCode = error.statusCode;
       if (statusCode == 404) {
-        throw const ErroPokemonNaoEncontrado();
+        return const Left(ErroPokemonNaoEncontrado());
       }
-      throw const ErroDesconhecido();
+      return const Left(ErroDesconhecido());
     } catch (e) {
-      throw const ErroDesconhecido();
+      return const Left(ErroDesconhecido());
     }
   }
 }

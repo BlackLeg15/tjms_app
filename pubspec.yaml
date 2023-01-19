@@ -39,6 +39,7 @@ dependencies:
   flutter_modular: ^5.0.3
   uno: ^1.0.0
   dio: ^4.0.6
+  either_dart: ^0.3.0
 
 dev_dependencies:
   flutter_test:
