@@ -23,19 +23,19 @@ void main() {
     test('Se name é vazio, então realize o throw de um ErroNameVazio', () {
       when(() => httpClient.get(any())).thenAnswer((invocation) async => const HttpResponse(data: apiData));
       final result = repository.getPokemonByName(name: '');
-      expect(result, throwsA(isA<ErroNameVazio>()));
+      expect(result.then((either) => either.fold((left) => left, (right) => right)), completion(isA<ErroNameVazio>()));
     });
 
     test('Se name não é vazio, então devolva um PokemonModel', () {
       when(() => httpClient.get(any())).thenAnswer((invocation) async => const HttpResponse(data: apiData));
       final result = repository.getPokemonByName(name: 'ditto');
-      expect(result, completion(isA<PokemonModel>()));
+      expect(result.then((either) => either.fold((left) => left, (right) => right)), completion(isA<PokemonModel>()));
     });
 
     test('Se o pokémon não for encontrado, realize o throw de um ErroPokemonNaoEncontrado', () {
       when(() => httpClient.get(any())).thenThrow(const HttpException(message: '', statusCode: 404));
       final result = repository.getPokemonByName(name: 'dog');
-      expect(result, throwsA(isA<ErroPokemonNaoEncontrado>()));
+      expect(result.then((either) => either.fold((left) => left, (right) => right)), completion(isA<ErroPokemonNaoEncontrado>()));
     });
   });
 }

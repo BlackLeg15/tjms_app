@@ -1,9 +1,8 @@
 import 'package:either_dart/either.dart';
-import 'package:flutter/foundation.dart';
-import 'package:tjms_app/app/modules/search_pokemon/interfaces/http_client/http_exception.dart';
 
 import '../errors/errors.dart';
 import '../interfaces/http_client/http_client.dart';
+import '../interfaces/http_client/http_exception.dart';
 import '../interfaces/repositories/search_pokemon_repository.dart';
 import '../models/pokemon_model.dart';
 
@@ -22,14 +21,13 @@ class SearchPokemonRepositoryImp implements SearchPokemonRepository {
       final model = PokemonModel.fromMap(result.data);
       return Right(model);
     } on HttpException catch (error, stacktrace) {
-      debugPrint(stacktrace.toString());
       final statusCode = error.statusCode;
       if (statusCode == 404) {
-        return const Left(ErroPokemonNaoEncontrado());
+        return Left(ErroPokemonNaoEncontrado(stackTrace: stacktrace));
       }
-      return const Left(ErroDesconhecido());
-    } catch (e) {
-      return const Left(ErroDesconhecido());
+      return Left(ErroDesconhecido(stackTrace: stacktrace));
+    } catch (e, stacktrace) {
+      return Left(ErroDesconhecido(stackTrace: stacktrace));
     }
   }
 }
