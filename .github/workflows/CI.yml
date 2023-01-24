@@ -29,6 +29,8 @@ jobs:
         with:
           name: test-results
           reporter: flutter-json
+          path: './coverage/lcov.info'
       - uses: VeryGoodOpenSource/very_good_coverage@v2.1.0
         with:
           min_coverage: 0
+          path: './coverage/lcov.info'
