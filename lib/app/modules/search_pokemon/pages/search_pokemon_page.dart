@@ -1,6 +1,7 @@
 import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tjms_app/app/core/tjms_theme_extension.dart';
 import 'package:tjms_app/app/modules/search_pokemon/errors/errors.dart';
 import 'package:tjms_app/app/modules/search_pokemon/pages/widgets/list_tile_personalizado.dart';
 
@@ -23,6 +24,7 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tjmsColorExtension = Theme.of(context).extension<TjmsThemeExtension>()!;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search Pokemon'),
@@ -36,12 +38,17 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
             }
             if (snapshot.hasData) {
               final pokemonOrError = snapshot.data!;
-              return pokemonOrError.fold<Widget>((left) => Text(left.message), (pokemon) {
+              return pokemonOrError.fold<Widget>(
+                  (left) => Text(
+                        left.message,
+                        style: TextStyle(color: tjmsColorExtension.danger),
+                      ), (pokemon) {
                 return Column(
                   children: [
                     ListTilePersonalizado(
                       name: pokemon.name,
                       id: pokemon.id,
+                      corDeFundo: tjmsColorExtension.brandColor,
                     ),
                     ListView.builder(
                       shrinkWrap: true,
