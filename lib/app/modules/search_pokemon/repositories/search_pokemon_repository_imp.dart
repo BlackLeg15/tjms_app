@@ -13,7 +13,6 @@ class SearchPokemonRepositoryImp implements SearchPokemonRepository {
 
   @override
   Future<Either<ErroPersonalizado, PokemonModel>> getPokemonByName({required String name}) async {
-    return const Left(ErroDesconhecido());
     if (name.isEmpty) {
       return const Left(ErroNameVazio());
     }
