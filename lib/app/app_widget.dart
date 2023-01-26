@@ -8,27 +8,23 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeController(
-      child: Builder(builder: (context) {
-        final themeController = ThemeController.of(context);
-        return ValueListenableBuilder(
-          valueListenable: themeController.isDark,
-          builder: (context, isDark, child) {
-            final theme = isDark ? ThemeData.dark() : ThemeData.light();
-            return MaterialApp.router(
-              title: 'Flutter Demo',
-              theme: theme.copyWith(
-                extensions: const [
-                  TjmsThemeExtension(),
-                ],
-              ),
-              routerDelegate: Modular.routerDelegate,
-              routeInformationParser: Modular.routeInformationParser,
-              debugShowCheckedModeBanner: false,
-            );
-          },
+    final themeController = Modular.get<ThemeController>();
+    return ValueListenableBuilder(
+      valueListenable: themeController.isDark,
+      builder: (context, isDark, child) {
+        final theme = isDark ? ThemeData.dark() : ThemeData.light();
+        return MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: theme.copyWith(
+            extensions: const [
+              TjmsThemeExtension(),
+            ],
+          ),
+          routerDelegate: Modular.routerDelegate,
+          routeInformationParser: Modular.routeInformationParser,
+          debugShowCheckedModeBanner: false,
         );
-      }),
+      },
     );
   }
 }

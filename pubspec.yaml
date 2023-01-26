@@ -40,6 +40,7 @@ dependencies:
   uno: ^1.0.0
   dio: ^4.0.6
   either_dart: ^0.3.0
+  shared_preferences: ^2.0.17
 
 dev_dependencies:
   flutter_test:

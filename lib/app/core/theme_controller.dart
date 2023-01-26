@@ -1,18 +1,26 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class ThemeController extends InheritedWidget {
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class ThemeController {
   final isDark = ValueNotifier(false);
 
-  ThemeController({super.key, required super.child});
-
-  void changeTheme() {
-    isDark.value = !isDark.value;
+  ThemeController() {
+    initTheme();
   }
 
-  static ThemeController of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<ThemeController>()!;
+  Future<void> changeTheme() async {
+    isDark.value = !isDark.value;
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool('theme', isDark.value);
+  }
 
-  @override
-  bool updateShouldNotify(covariant ThemeController oldWidget) {
-    return oldWidget.isDark != isDark;
+  Future<void> initTheme() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final value = sharedPreferences.getBool('theme');
+    if (value != null) {
+      isDark.value = value;
+    }
   }
 }
