@@ -22,6 +22,12 @@ class _HomePageState extends State<HomePage> {
                 Modular.to.pushNamed('search_pokemon/');
               },
             ),
+            ListTile(
+              title: const Text('2. Animações Explícitas/Controladas'),
+              onTap: () {
+                Modular.to.pushNamed('./animations');
+              },
+            ),
           ],
         ),
       ),
