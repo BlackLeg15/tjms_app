@@ -9,7 +9,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Modular.get<ThemeController>();
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<bool>(
       valueListenable: themeController.isDark,
       builder: (context, isDark, child) {
         final theme = isDark ? ThemeData.dark() : ThemeData.light();

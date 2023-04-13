@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:modular_test/modular_test.dart';
 import 'package:tjms_app/app/app_module.dart';
+import 'package:tjms_app/app/core/theme_controller.dart';
+import 'package:tjms_app/app/core/tjms_theme_extension.dart';
 import 'package:tjms_app/app/modules/search_pokemon/errors/errors.dart';
 import 'package:tjms_app/app/modules/search_pokemon/interfaces/http_client/http_client.dart';
 import 'package:tjms_app/app/modules/search_pokemon/interfaces/http_client/http_response.dart';
@@ -13,24 +15,43 @@ import 'package:tjms_app/app/modules/search_pokemon/search_pokemon_module.dart';
 
 class HttpClientMock extends Mock implements HttpClient {}
 
+class ThemeControllerMock extends Mock implements ThemeController {}
+
 void main() {
   late HttpClient httpClient;
+  late ThemeController themeController;
 
   setUpAll(() {
     httpClient = HttpClientMock();
+    themeController = ThemeControllerMock();
     initModules([
       AppModule(),
       SearchPokemonModule()
     ], replaceBinds: [
       Bind.lazySingleton<HttpClient>((i) => httpClient),
+      Bind.lazySingleton<ThemeController>((i) => themeController),
     ]);
+
+    when(
+      themeController.initTheme,
+    ).thenAnswer((invocation) async {
+      return;
+    });
+    when(
+      () => themeController.isDark,
+    ).thenReturn(ValueNotifier(false));
   });
 
   testWidgets('Se ErroNameVazio, apresente a mensagem adequada', (tester) async {
     //Configuração
     await tester.pumpWidget(
-      const MaterialApp(
-        home: SearchPokemonPage(),
+      MaterialApp(
+        theme: ThemeData.light().copyWith(
+          extensions: const [
+            TjmsThemeExtension(),
+          ],
+        ),
+        home: const SearchPokemonPage(),
       ),
     );
 
@@ -49,8 +70,13 @@ void main() {
   testWidgets('Se dados são corretos, a página deve apresentá-los corretamente', (tester) async {
     when(() => httpClient.get(any())).thenAnswer((invocation) async => const HttpResponse(data: apiData));
     await tester.pumpWidget(
-      const MaterialApp(
-        home: SearchPokemonPage(),
+      MaterialApp(
+        theme: ThemeData.light().copyWith(
+          extensions: const [
+            TjmsThemeExtension(),
+          ],
+        ),
+        home: const SearchPokemonPage(),
       ),
     );
 
