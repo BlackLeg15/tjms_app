@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tjms_app/app/core/theme_controller.dart';
+import 'package:tjms_app/app/core/app_controller.dart';
 import 'package:tjms_app/app/core/tjms_theme_extension.dart';
 import 'package:tjms_app/app/modules/search_pokemon/errors/errors.dart';
 import 'package:tjms_app/app/modules/search_pokemon/pages/widgets/list_tile_personalizado.dart';
@@ -21,7 +21,7 @@ class SearchPokemonPage extends StatefulWidget {
 class _SearchPokemonPageState extends State<SearchPokemonPage> {
   final pokemonName = 'pikachu';
   final repository = Modular.get<SearchPokemonRepository>();
-  final themeController = Modular.get<ThemeController>();
+  final themeController = Modular.get<AppController>();
 
   var campoDeTexto = '';
   Future<Either<ErroPersonalizado, PokemonModel>>? futureGetPokemonByName;
@@ -38,7 +38,7 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
             icon: AnimatedCrossFade(
               firstChild: const Icon(Icons.light_mode),
               secondChild: const Icon(Icons.dark_mode),
-              crossFadeState: themeController.isDark.value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              crossFadeState: themeController.isDark ? CrossFadeState.showFirst : CrossFadeState.showSecond,
               duration: const Duration(milliseconds: 300),
             ),
           ),
